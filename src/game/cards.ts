@@ -1,6 +1,6 @@
 export type Mode = 'basic' | 'counting'
 export type System = 'hilo' | 'zen'
-export type Action = 'Hit' | 'Stand' | 'Double' | 'Split' | 'Surrender'
+export type Action = 'Hit' | 'Stand' | 'Double' | 'Split'
 export type Rank = 'A' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10'
 export type Phase = 'bet' | 'play' | 'count'
 
@@ -29,7 +29,6 @@ export function recommend(c: Rank[], d: Rank): Action {
   const t = total(c)
   const u = d === 'A' ? 11 : +d
   if (c.length === 2 && c[0] === c[1] && (c[0] === 'A' || c[0] === '8')) return 'Split'
-  if (c.length === 2 && t === 16 && u >= 9) return 'Surrender'
   if (t >= 17) return 'Stand'
   if (t >= 13) return u <= 6 ? 'Stand' : 'Hit'
   if (t === 12) return u >= 4 && u <= 6 ? 'Stand' : 'Hit'
@@ -52,7 +51,6 @@ export function availableActions(player: Rank[]): Action[] {
     'Stand',
     ...(player.length === 2 ? (['Double'] as Action[]) : []),
     ...(player.length === 2 && player[0] === player[1] ? (['Split'] as Action[]) : []),
-    ...(player.length === 2 ? (['Surrender'] as Action[]) : []),
   ]
 }
 

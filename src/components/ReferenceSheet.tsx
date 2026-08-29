@@ -151,9 +151,6 @@ export function ReferenceSheet({ open, mode, onClose }: ReferenceSheetProps) {
       ) : (
         <>
           <StrategyChart />
-          <p className="chart-note">
-            Surrender hard 16 against 9, 10, or A when offered. This chart follows the active trainer rules.
-          </p>
         </>
       )}
     </Sheet>

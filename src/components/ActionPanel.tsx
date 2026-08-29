@@ -16,7 +16,7 @@ type ActionPanelProps = {
   onConfirmCount: () => void
 }
 
-const ALL_ACTIONS: Action[] = ['Hit', 'Stand', 'Double', 'Split', 'Surrender']
+const ALL_ACTIONS: Action[] = ['Hit', 'Stand', 'Double', 'Split']
 const CHIP_VALUES = [1, 2, 4, 6, 8, 10, 12]
 
 const ACTION_SHORTCUTS: Record<Action, string> = {
@@ -24,7 +24,6 @@ const ACTION_SHORTCUTS: Record<Action, string> = {
   Stand: 'S',
   Double: 'D',
   Split: 'P',
-  Surrender: 'R',
 }
 
 const ACTION_BY_KEY: Record<string, Action> = {
@@ -32,7 +31,6 @@ const ACTION_BY_KEY: Record<string, Action> = {
   s: 'Stand',
   d: 'Double',
   p: 'Split',
-  r: 'Surrender',
 }
 
 function isTypingTarget(target: EventTarget | null) {
