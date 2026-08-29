@@ -28,6 +28,15 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  border-radius: 10px;
+}
+
+.app-brand:hover {
+  background: var(--surface-muted);
 }
 
 .app-logo {

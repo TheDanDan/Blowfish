@@ -10,11 +10,13 @@ type SettingsSheetProps = {
   decks: number
   feedback: 'instant' | 'after'
   betOn: boolean
+  useExcalifont: boolean
   onModeChange: (mode: Mode) => void
   onSystemChange: (system: System) => void
   onDecksChange: (decks: number) => void
   onFeedbackChange: (feedback: 'instant' | 'after') => void
   onBetOnChange: (betOn: boolean) => void
+  onUseExcalifontChange: (useExcalifont: boolean) => void
   onStart: () => void
 }
 
@@ -26,11 +28,13 @@ export function SettingsSheet({
   decks,
   feedback,
   betOn,
+  useExcalifont,
   onModeChange,
   onSystemChange,
   onDecksChange,
   onFeedbackChange,
   onBetOnChange,
+  onUseExcalifontChange,
   onStart,
 }: SettingsSheetProps) {
   return (
@@ -83,6 +87,18 @@ export function SettingsSheet({
             </>
           )}
         </div>
+        <button
+          type="button"
+          className={`settings-toggle ${useExcalifont ? 'on' : ''}`}
+          onClick={() => onUseExcalifontChange(!useExcalifont)}
+          aria-pressed={useExcalifont}
+        >
+          <span>
+            <b>Use Excalifont</b>
+            <small>Apply Excalidraw's hand-drawn font throughout the app</small>
+          </span>
+          <i aria-hidden="true" />
+        </button>
         {mode === 'counting' && (
           <button
             type="button"

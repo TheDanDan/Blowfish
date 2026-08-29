@@ -39,7 +39,8 @@ export default function App() {
   const [running, setRunning] = useState(0)
   const [answer, setAnswer] = useState('')
   const [wager, setWager] = useState(1)
-  const [settings, setSettings] = useState(true)
+  const [settings, setSettings] = useState(false)
+  const [useExcalifont, setUseExcalifont] = useState(() => localStorage.getItem('bf-excalifont') === 'true')
   const [reference, setReference] = useState(false)
   const [mistake, setMistake] = useState<string | null>(null)
   const [pendingPhase, setPendingPhase] = useState<'bet' | 'count' | null>(null)
@@ -59,6 +60,11 @@ export default function App() {
     localStorage.setItem('bf-decks', String(decks))
     localStorage.setItem('bf-bet', String(betOn))
   }, [mode, system, decks, betOn])
+
+  useEffect(() => {
+    localStorage.setItem('bf-excalifont', String(useExcalifont))
+    document.documentElement.classList.toggle('excalifont-mode', useExcalifont)
+  }, [useExcalifont])
 
   const tc = useMemo(
     () => Math.trunc(running / Math.max(0.5, Math.round((shoe.length / 52) * 2) / 2)),
@@ -193,11 +199,13 @@ export default function App() {
         decks={decks}
         feedback={feedback}
         betOn={betOn}
+        useExcalifont={useExcalifont}
         onModeChange={setMode}
         onSystemChange={setSystem}
         onDecksChange={setDecks}
         onFeedbackChange={setFeedback}
         onBetOnChange={setBetOn}
+        onUseExcalifontChange={setUseExcalifont}
         onStart={handleStart}
       />
 

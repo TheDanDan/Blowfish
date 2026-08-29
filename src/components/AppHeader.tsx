@@ -13,10 +13,10 @@ type AppHeaderProps = {
 export function AppHeader({ onReference, onSettings, onReshuffle, theme, onToggleTheme }: AppHeaderProps) {
   return (
     <header className="app-header">
-      <div className="app-brand">
+      <button type="button" className="app-brand" onClick={onSettings} aria-label="Open settings">
         <img className="app-logo" src={blowfishLogo} alt="" />
         <div className="app-title">Blowfish</div>
-      </div>
+      </button>
       <nav className="app-nav" aria-label="App controls">
         <button type="button" className="nav-link" onClick={onReference}>
           Reference
