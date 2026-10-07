@@ -1,32 +1,46 @@
-# React + TypeScript + Vite
+# Blowfish
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Blowfish is a small, offline-ready blackjack decision and card counting trainer. It runs entirely in your browser; there is no account, server, or real-money play.
 
-Currently, two official plugins are available:
+## Practice
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Basic:** Choose hit, stand, double, or split for each hand. Review a strategy chart in the app.
+- **Count:** Practice Hi-Lo or Zen running counts and, optionally, a simple true-count bet ramp.
+- Use **Space** to deal and **H**, **S**, **D**, or **P** for available play actions.
+- Change decks, counting system, feedback timing, and appearance in Settings. Preferences are saved in your browser; session scores reset when the page reloads.
 
-## React Compiler
+This is a **decision drill**, not a full blackjack game. Splits and doubles score your choice and end that decision; the app does not play out multiple split hands or settle bets. The chart is a simplified teaching chart, and real table rules can change the best play. Do not treat the bet ramp as gambling advice.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Run locally
 
-## Expanding the Oxlint configuration
+Requirements: Node.js 24 and pnpm 10.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Open the local address printed by Vite. To check a change:
+
+```sh
+pnpm lint
+pnpm test
+pnpm build
+pnpm preview
+```
+
+`pnpm build` creates the static site in `dist/`. The PWA service worker is generated for production builds; offline use works after the deployed site has been loaded once.
+
+## Deploy to GitHub Pages
+
+The repository includes [a Pages workflow](.github/workflows/deploy-pages.yml) that checks lint and build, then publishes `dist/` whenever `main` changes. In the GitHub repository, open **Settings → Pages** and choose **GitHub Actions** as the build and deployment source. The first push to `main` then starts a deployment. You can also run **Deploy to GitHub Pages** manually from the Actions tab.
+
+The site is configured for this repository's `/Blowfish/` path and should be available at [thedandan.github.io/Blowfish/](https://thedandan.github.io/Blowfish/) after Pages is enabled and deployment succeeds. If the repository name changes, update `base` in `vite.config.ts` before deploying.
+
+## Contributing
+
+Issues and pull requests are welcome. Keep the trainer's strategy decisions consistent with the in-app reference chart. Run `pnpm lint`, `pnpm test`, and `pnpm build` before opening a pull request.
+
+## License
+
+MIT. See [LICENSE](LICENSE).

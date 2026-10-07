@@ -1,5 +1,15 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
-import type { ComponentProps } from 'react'
+import type { ComponentProps, ComponentType, HTMLAttributes, ButtonHTMLAttributes } from 'react'
+
+// Radix's polymorphic primitive props are not fully inferred by TypeScript 6.
+// Keep the public wrapper props explicit until its upstream types support it.
+const Trigger = SelectPrimitive.Trigger as ComponentType<ButtonHTMLAttributes<HTMLButtonElement> & { asChild?: boolean }>
+const Icon = SelectPrimitive.Icon as ComponentType<HTMLAttributes<HTMLSpanElement> & { asChild?: boolean }>
+const Content = SelectPrimitive.Content as ComponentType<HTMLAttributes<HTMLDivElement> & { position?: 'item-aligned' | 'popper'; align?: 'start' | 'center' | 'end'; sideOffset?: number }>
+const ScrollUpButton = SelectPrimitive.ScrollUpButton as ComponentType<HTMLAttributes<HTMLDivElement>>
+const Viewport = SelectPrimitive.Viewport as ComponentType<HTMLAttributes<HTMLDivElement>>
+const ScrollDownButton = SelectPrimitive.ScrollDownButton as ComponentType<HTMLAttributes<HTMLDivElement>>
+const Item = SelectPrimitive.Item as ComponentType<HTMLAttributes<HTMLDivElement> & { value: string; disabled?: boolean }>
 
 function ChevronDownIcon() {
   return (
@@ -37,16 +47,16 @@ function SelectTrigger({
   className,
   children,
   ...props
-}: ComponentProps<typeof SelectPrimitive.Trigger>) {
+}: ComponentProps<typeof Trigger>) {
   return (
-    <SelectPrimitive.Trigger data-slot="select-trigger" className={className} {...props}>
+    <Trigger data-slot="select-trigger" className={className} {...props}>
       {children}
-      <SelectPrimitive.Icon asChild>
+      <Icon asChild>
         <span data-slot="select-icon">
           <ChevronDownIcon />
         </span>
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
+      </Icon>
+    </Trigger>
   )
 }
 
@@ -56,10 +66,10 @@ function SelectContent({
   position = 'popper',
   align = 'end',
   ...props
-}: ComponentProps<typeof SelectPrimitive.Content>) {
+}: ComponentProps<typeof Content>) {
   return (
     <SelectPrimitive.Portal>
-      <SelectPrimitive.Content
+      <Content
         data-slot="select-content"
         className={className}
         position={position}
@@ -67,14 +77,14 @@ function SelectContent({
         sideOffset={4}
         {...props}
       >
-        <SelectPrimitive.ScrollUpButton data-slot="select-scroll-button">
+        <ScrollUpButton data-slot="select-scroll-button">
           <ChevronUpIcon />
-        </SelectPrimitive.ScrollUpButton>
-        <SelectPrimitive.Viewport data-slot="select-viewport">{children}</SelectPrimitive.Viewport>
-        <SelectPrimitive.ScrollDownButton data-slot="select-scroll-button">
+        </ScrollUpButton>
+        <Viewport data-slot="select-viewport">{children}</Viewport>
+        <ScrollDownButton data-slot="select-scroll-button">
           <ChevronDownIcon />
-        </SelectPrimitive.ScrollDownButton>
-      </SelectPrimitive.Content>
+        </ScrollDownButton>
+      </Content>
     </SelectPrimitive.Portal>
   )
 }
@@ -83,16 +93,16 @@ function SelectItem({
   className,
   children,
   ...props
-}: ComponentProps<typeof SelectPrimitive.Item>) {
+}: ComponentProps<typeof Item>) {
   return (
-    <SelectPrimitive.Item data-slot="select-item" className={className} {...props}>
+    <Item data-slot="select-item" className={className} {...props}>
       <span data-slot="select-item-indicator">
         <SelectPrimitive.ItemIndicator>
           <CheckIcon />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-    </SelectPrimitive.Item>
+    </Item>
   )
 }
 

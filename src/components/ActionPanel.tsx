@@ -167,6 +167,9 @@ export function ActionPanel({
         }}
       >
         <input
+          type="number"
+          step="1"
+          required
           value={answer}
           onChange={(e) => onAnswerChange(e.target.value)}
           inputMode="numeric"

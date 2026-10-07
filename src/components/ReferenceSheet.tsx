@@ -31,6 +31,7 @@ function StrategyChart() {
           ])}
         </div>
       </div>
+      <p className="chart-note">A simplified decision chart for this trainer. Table rules may change the best play; split and double choices end the decision drill.</p>
     </>
   )
 }

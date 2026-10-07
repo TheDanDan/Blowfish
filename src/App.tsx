@@ -26,9 +26,12 @@ import './styles/app.css'
 export default function App() {
   const { resolved, toggleTheme } = useTheme()
 
-  const [mode, setMode] = useState<Mode>(() => (localStorage.getItem('bf-mode') as Mode) || 'basic')
-  const [system, setSystem] = useState<System>(() => (localStorage.getItem('bf-system') as System) || 'hilo')
-  const [decks, setDecks] = useState(() => +(localStorage.getItem('bf-decks') || 6))
+  const [mode, setMode] = useState<Mode>(() => localStorage.getItem('bf-mode') === 'counting' ? 'counting' : 'basic')
+  const [system, setSystem] = useState<System>(() => localStorage.getItem('bf-system') === 'zen' ? 'zen' : 'hilo')
+  const [decks, setDecks] = useState(() => {
+    const stored = Number(localStorage.getItem('bf-decks'))
+    return [1, 2, 4, 6, 8].includes(stored) ? stored : 6
+  })
   const [betOn, setBetOn] = useState(() => localStorage.getItem('bf-bet') !== 'false')
   const [feedback, setFeedback] = useState<'instant' | 'after'>('instant')
 
@@ -43,6 +46,7 @@ export default function App() {
   const [useExcalifont, setUseExcalifont] = useState(() => localStorage.getItem('bf-excalifont') === 'true')
   const [reference, setReference] = useState(false)
   const [mistake, setMistake] = useState<string | null>(null)
+  const [deferredMistake, setDeferredMistake] = useState<string | null>(null)
   const [pendingPhase, setPendingPhase] = useState<'bet' | 'count' | null>(null)
   const [stats, setStats] = useState<Stats>({
     hands: 0,
@@ -86,6 +90,7 @@ export default function App() {
     setDealer([])
     setPhase('bet')
     setMistake(null)
+    setDeferredMistake(null)
     setPendingPhase(null)
   }
 
@@ -107,17 +112,28 @@ export default function App() {
   const play = (a: Action) => {
     const best = recommend(player, dealer[0])
     setStats((s) => ({ ...s, play: s.play + 1, playOk: s.playOk + (a === best ? 1 : 0) }))
-    const hadMistake = a !== best
-    if (hadMistake) setMistake(`${total(player)} vs dealer ${dealer[0]} → ${best}`)
+    const currentMistake = a === best ? null : `${total(player)} vs dealer ${dealer[0]} → ${best}`
+    let continues = false
     if (a === 'Hit') {
       const next = [...player, draw(1)[0]]
       setPlayer(next)
-      if (total(next) < 21) return
+      continues = total(next) < 21
     } else if (a === 'Double') {
       setPlayer((p) => [...p, draw(1)[0]])
     }
+    const delayed = mode === 'counting' && feedback === 'after'
+    if (continues) {
+      if (currentMistake) {
+        if (delayed) setDeferredMistake((previous) => previous ?? currentMistake)
+        else setMistake(currentMistake)
+      }
+      return
+    }
     const nextPhase = mode === 'counting' ? 'count' : 'bet'
-    if (hadMistake) {
+    const message = delayed ? deferredMistake ?? currentMistake : currentMistake
+    setDeferredMistake(null)
+    if (message) {
+      setMistake(message)
       setPendingPhase(nextPhase)
     } else {
       setPhase(nextPhase)
@@ -133,7 +149,8 @@ export default function App() {
   }
 
   const confirm = () => {
-    const seen = [...player, dealer[0]]
+    if (!/^[+-]?\d+$/.test(answer.trim())) return
+    const seen = [...player, ...dealer]
     const actual = running + seen.reduce((n, r) => n + tag(r), 0)
     const ok = +answer === actual
     setRunning(actual)
