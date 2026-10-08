@@ -13,23 +13,23 @@ This is a **decision drill**, not a full blackjack game. Splits and doubles scor
 
 ## Run locally
 
-Requirements: Node.js 24 and pnpm 10.
+Requirements: Bun 1.3.1.
 
 ```sh
-pnpm install --frozen-lockfile
-pnpm dev
+bun install --frozen-lockfile
+bun run dev
 ```
 
 Open the local address printed by Vite. To check a change:
 
 ```sh
-pnpm lint
-pnpm test
-pnpm build
-pnpm preview
+bun run lint
+bun run test
+bun run build
+bun run preview
 ```
 
-`pnpm build` creates the static site in `dist/`. The PWA service worker is generated for production builds; offline use works after the deployed site has been loaded once.
+`bun run build` creates the static site in `dist/`. The PWA service worker is generated for production builds; offline use works after the deployed site has been loaded once.
 
 ## Deploy to GitHub Pages
 
@@ -39,7 +39,7 @@ The site is configured for this repository's `/Blowfish/` path and should be ava
 
 ## Contributing
 
-Issues and pull requests are welcome. Keep the trainer's strategy decisions consistent with the in-app reference chart. Run `pnpm lint`, `pnpm test`, and `pnpm build` before opening a pull request.
+Issues and pull requests are welcome. Keep the trainer's strategy decisions consistent with the in-app reference chart. Run `bun run lint`, `bun run test`, and `bun run build` before opening a pull request.
 
 ## License
 
